@@ -91,12 +91,19 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $foto = $request->file('formFile');
-        if ($foto == "") {
-            $product = Products::find($id);
-            $product->nama = request('namaproduk');
-            $product->deskripsi= request('deskripsiproduk');
-            $product->save();
+        $product = Products::find($id);
+
+        // jika file image tersebut telah tersedia, maka file yang lama akan dihapus
+        if ( $product->gambar && file_exists(storage_path('app/public/' . $product->gambar))) 
+        {
+            \Storage::delete(['public/' .$product->gambar]);
+        }
+        // namun, jika file image masih belum ada, maka file baru yang diupload akan disimpan
+        $image_name = $request->file('formFile')->store('images', 'public');
+        $product->gambar = $image_name;
+        $product->nama = request('namaproduk');
+        $product->deskripsi= request('deskripsiproduk');
+        $product->save();
 
            if ($product) {
             Session::flash('success','Sukses Update Data');
@@ -105,24 +112,6 @@ class ProductsController extends Controller
                 Session::flash('success','Failed Update Data');
                 return redirect()->route('products.index');
             }
-        } else {
-            $file = $request->file('formFile');
-            $org = $file->getClientOriginalName();
-            $path = 'formFile';
-            $file->move($path,$org);
-
-            $product = Products::find($id) ;
-            $product->nama = request('namaproduk');
-            $product->deskripsi= request('deskripsiproduk');
-            $product->save();
-            if ($product) {
-                Session::flash('success','Sukses Update Data');
-                return redirect()->route('products.index');
-            } else {
-                Session::flash('success','Failed Update Data');
-                return redirect()->route('products.index');
-            }
-        }
     }
 
     /**

@@ -33,9 +33,9 @@
                     </div>
                     <div class="form-group">
                     <label>Gambar Produk</label>
+                    <input type="file" name="formFile" class="form-control" id="formFile" value="{{ $product->gambar }}" 
+                    required="required" aria-describedby="formFile" ></br>
                     <img src="{{asset('storage/'.$product->gambar)}}" style="width: 200px; height: 200px;">
-                    <br></br>
-                    <input type="file" name="formFile" class="form-control">
                     </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
