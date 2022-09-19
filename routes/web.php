@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\MahasiswaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,5 +20,7 @@ Route::get('/', function () {
 
 Route::resource('product', ProductsController::class);
 Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
-// Route::get('/products/create', [ProductsController::class, 'create']);
-// Route::post('/products', [ProductsController::class, 'store']);
+Route::get('mahasiswa/pdf', [MahasiswaController::class, 'cetak_pdf'])->name('mahasiswa.cetak_pdf');
+// Route::get('/mahasiswas', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+Route::resource('mahasiswa', MahasiswaController::class);
+
